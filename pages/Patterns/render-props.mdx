@@ -2,3 +2,36 @@
 name: Render Props
 ---
 
+# Render props 
+
+Render props are a prop that you pass to a component telling it what to render. Your not passing a component instead we are passing a function to render a component.
+
+> A component with a render prop takes a function that returns a React element and calls it instead of implementing its own render logic.
+
+
+```js
+
+<FetchWeather render={({ weatherForcast, onRequest }) => (
+  <WeatherForcast weatherForcast={weatherForcast} onRequest={onRequest} />
+)} />
+
+```
+
+While a simple pattern this can be powerful. As the render prop is a function prop that a component uses to know **what** to render.
+
+Inside the FetchWeather component, we pass a prop called render, which is going to be a function to render our WeatherForcast component. That render function takes two arguments - `weatherForcast` which is going to be our weather forecast that we fetch from the API, and onRequest which is our function that we're going to use to make a new request every time we click a button.
+
+```js
+render() {
+  return (
+    <div onClick={this.onRequest}>
+      {this.props.render(this.state)}
+    </div>
+  )
+}
+```
+
+#### Credits
+
+https://www.telerik.com/blogs/advanced-patterns-in-react
+https://reactjs.org/docs/render-props.html
