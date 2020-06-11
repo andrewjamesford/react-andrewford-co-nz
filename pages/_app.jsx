@@ -11,7 +11,7 @@ export default function App(props) {
             ]}
             headerLogo={
                 <img
-                    src='/learning-reactjs.svg'
+                    src='/reactjs-notes.svg'
                     style={{ opacity: 0.8 }}
                     width='300px'
                 />
