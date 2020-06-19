@@ -6,7 +6,7 @@ export default function App(props) {
     return (
         <DokzProvider
             headerItems={[
-                <GithubLink key='0' url='https://github.com/remorses/dokz' />,
+                <GithubLink key='0' url='https://github.com/andrewjamesford/react-andrewford-co-nz' />,
                 <ColorModeSwitch key='1' />,
             ]}
             headerLogo={
@@ -17,7 +17,7 @@ export default function App(props) {
                 />
             }
             initialColorMode='dark'
-            
+
         >
             <Component {...pageProps} />
         </DokzProvider>
