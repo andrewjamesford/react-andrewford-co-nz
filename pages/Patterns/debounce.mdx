@@ -1,0 +1,102 @@
+---
+name: Debounce
+---
+
+# Debounce example
+
+>> debounce
+>> verb: To remove the small ripple of current that forms when a mechanical switch is pushed in an electrical circuit and makes a series of short contacts.
+
+This hook allows you to debounce any fast changing value. The debounced value will only reflect the latest value when the useDebounce hook has not been called for the specified time period. When used in conjunction with useEffect, as we do in the recipe below, you can easily ensure that expensive operations like API calls are not executed too frequently. The example below allows you to search the Marvel Comic API and uses useDebounce to prevent API calls from being fired on every keystroke.
+
+Here is an example using the iTunes API - [live demo](https://codesandbox.io/s/usedebounce-x8t9w?file=/src/index.js:0-2174)
+
+```js
+import React, { useState, useEffect } from "react";
+import ReactDOM from "react-dom";
+import useDebounce from "./use-debounce";
+import "./styles.css";
+
+function App() {
+  // State and setters for ...
+  // Search term
+  const [searchTerm, setSearchTerm] = useState("");
+  // API search results
+  const [results, setResults] = useState([]);
+  // Searching status (whether there is pending API request)
+  const [isSearching, setIsSearching] = useState(false);
+  // Debounce search term so that it only gives us latest value ...
+  // ... if searchTerm has not been updated within last 500ms
+  // As a result the API call should only fire once user stops typing
+  const debouncedSearchTerm = useDebounce(searchTerm, 500);
+
+  useEffect(
+    () => {
+      if (debouncedSearchTerm) {
+        setIsSearching(true);
+        searchItunes(debouncedSearchTerm).then(results => {
+          setIsSearching(false);
+          console.log(results);
+          
+          setResults(results.results);
+        });
+      } else {
+        setResults([]);
+      }
+    },
+    [debouncedSearchTerm] // Only call effect if debounced search term changes
+  );
+  
+  return (
+    <div style={{ padding: "15px" }}>
+      <div>
+        <input
+          style={{
+            width: "100%",
+            fontSize: "2rem",
+            padding: "0.4rem",
+            marginBottom: "10px"
+          }}
+          placeholder="Search iTunes"
+          onChange={e => setSearchTerm(e.target.value)}
+        />
+      </div>
+
+      {isSearching && <div>Searching ...</div>}
+
+      {results.map(result => (
+        <div
+          key={result.trackId}
+          style={{
+            display: "inline-block",
+            width: "200px",
+            margin: "10px"
+          }}
+        >
+          <h4>{result.trackName} - {result.artistName}</h4>
+          <img src={result.artworkUrl100} alt={result.trackName} />
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function searchItunes(search) {
+  return fetch(
+    `https://itunes.apple.com/search?term=${search}`,
+    {
+      method: "GET"
+    }
+  ).then(r => r.json());
+}
+
+const rootElement = document.getElementById("root");
+ReactDOM.render(<App />, rootElement);
+```
+
+
+
+#### Credits
+
+- https://usehooks.com/useDebounce/
+
