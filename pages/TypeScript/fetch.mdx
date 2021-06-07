@@ -1,0 +1,19 @@
+---
+name: Fetch
+---
+
+# Fetch with TypeScript
+
+Here's how to use Fetch with TypeScript
+
+```typescript
+const fetchProducts = async () => {
+  // You could return an environment variable here
+  const host = "http://localhost:3000";
+  // Make a fetch request
+  const response = await fetch(`${host}/api/products`);
+  // Return the result as JSON
+  const result = await response.json();
+  return result;
+};
+```
